@@ -6,7 +6,7 @@ A peer-to-peer creative workspace marketplace built for photography, filmmaking,
 
 ## Features
 
-- Three-slide Swiper hero and MongoDB-powered featured studio collection.
+- Three-slide studio photography hero with working category/location search and MongoDB-powered featured studios.
 - Category browsing, studio/location search, and hourly price sorting.
 - Better Auth email/password and Google authentication with persistent sessions.
 - Host-owned studio creation, image uploading, editing, and confirmed deletion dialogs.
@@ -14,7 +14,8 @@ A peer-to-peer creative workspace marketplace built for photography, filmmaking,
 - Booking requests, cancellation of pending reservations, and host confirmation/completion.
 - HTTPOnly-cookie JWT authorization with server-side session and ownership checks.
 - Transaction-based prevention of overlapping confirmed reservations.
-- Persistent light/dark theme, responsive cards, skeletons, empty states, and custom 404.
+- Persistent light/dark theme, locally bundled fonts and photographs, responsive cards, skeletons, empty states, and custom 404.
+- Repeatable 18-check browser review covering discovery, authentication guards, hosting forms, dialogs, and mobile layouts.
 
 ## Tech stack
 
@@ -38,6 +39,19 @@ Start the separately supplied server on port 5000. Open http://localhost:3000. `
 npm run lint
 npm run build
 ```
+
+Browser checks (stop the dev server first):
+
+```powershell
+npx playwright install chromium
+npm run test:ui
+```
+
+The UI suite starts its own local Next server and uses isolated API fixtures. It tests UI behavior without Google, ImgBB, or Atlas credentials. Real database/authentication behavior is covered by the server integration suite.
+
+## Design and assets
+
+The visual identity uses Manrope and Bricolage Grotesque, ink/off-white/lime colors, studio photography, and search-first navigation. Font license files are bundled in `app/fonts`; photo credits are in `public/media/CREDITS.md`. Peerspace, Giggster, and public Stuvia/Studiro previews informed the original layout; commercial template code and screenshots are not included.
 
 ## Examiner test credentials
 
@@ -63,3 +77,7 @@ Deploy the server first. Set `API_SERVER_URL` on the client to the HTTPS server 
 ## Content and boundaries
 
 Seed studios are illustrative and have no invented review scores. The app displays stored reviews but does not include a review-writing flow. No payment is processed. Optional PDF invoices and wishlists are not implemented. Newsletter, insurance coverage, and 24/7 staffed support are not represented as active services. Photos use Unsplash image URLs.
+
+## Verified revision
+
+Production build and lint pass. The browser review has 18 passing checks with explicit API fixtures. Separate API integration and full-stack browser-to-database checks passed against a temporary MongoDB replica set. Google OAuth, real ImgBB uploads, and the final hosting origins still require account configuration and deployment checks.

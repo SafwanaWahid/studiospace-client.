@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
+  devIndicators: false,
   async rewrites() {
     const api = (process.env.API_SERVER_URL || "http://localhost:5000").replace(
       /\/$/,

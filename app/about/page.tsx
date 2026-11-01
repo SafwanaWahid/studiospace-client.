@@ -16,7 +16,7 @@ export default function Page() {
         width={1200}
         height={800}
         className="about-image"
-        src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1800&q=85"
+        src="/media/film-stage.jpg"
         alt="A welcoming shared creative workspace"
       />
       <div className="prose section">

@@ -180,9 +180,9 @@ function Footer() {
           <div className="footer-brand">
             <Brand />
             <p>
-              Great spaces. Bigger possibilities.
+              Good work starts with a good space.
               <br />
-              Connecting creative people with the room to create.
+              Find studios for photo, film, sound, and art.
             </p>
             <div className="socials">
               <a
@@ -254,7 +254,7 @@ function Footer() {
             ))}
           </div>
           <div className="newsletter">
-            <h3>A little creative inspiration.</h3>
+            <h3>Stay in the frame.</h3>
             <p>Leave your email for future StudioSpace news.</p>
             <form
               onSubmit={(event) => {
@@ -277,12 +277,16 @@ function Footer() {
             <small>Newsletter service coming soon.</small>
           </div>
         </div>
+        <div className="footer-wordmark" aria-hidden="true">
+          studio<span>space</span>
+          <Aperture />
+        </div>
         <div className="footer-bottom">
           <span>
             © {new Date().getFullYear()} StudioSpace. All rights reserved.
           </span>
           <span>
-            Made for the moments you create. <Aperture size={14} />
+            Space for your next session. <Aperture size={14} />
           </span>
           <Link href="/terms">Terms & privacy</Link>
         </div>

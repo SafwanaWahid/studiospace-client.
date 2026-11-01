@@ -18,7 +18,9 @@ import { Button } from "./ui/button";
 export function Brand() {
   return (
     <Link href="/" className="brand">
-      <Aperture size={29} strokeWidth={1.7} />
+      <span className="brand-icon">
+        <Aperture size={25} strokeWidth={1.7} />
+      </span>
       <span>
         studio<span className="brand-light">space</span>
         <span className="accent">.</span>
@@ -40,7 +42,7 @@ export function Skeleton({ cards = 3 }: { cards?: number }) {
   );
 }
 export function Empty({
-  title = "Your next creative space is waiting",
+  title = "Find your next studio",
   description = "Explore studios and find a space that fits your next project.",
   href = "/studios",
   action = "Explore studios",
@@ -73,7 +75,7 @@ export function ErrorState({
 }) {
   return (
     <div role="alert" className="error-state">
-      <h2>We couldn’t load this just yet.</h2>
+      <h2>Studios are taking a moment to load.</h2>
       <p>{message}</p>
       {retry && <Button onClick={retry}>Try again</Button>}
     </div>

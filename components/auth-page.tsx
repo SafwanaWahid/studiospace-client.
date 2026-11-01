@@ -90,25 +90,27 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
           unoptimized
           width={1200}
           height={800}
-          src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1100&q=85"
+          src="/media/photo-studio.jpg"
           alt="Sunlit creative workspace"
         />
         <div>
           <Aperture size={38} />
           <h2>
-            A space for your
+            A place to make
             <br />
-            next chapter.
+            your next move.
           </h2>
-          <p>Find your people. Find your place. Make something that matters.</p>
+          <p>
+            Book a studio for your next shoot, recording, or creative session.
+          </p>
         </div>
       </div>
       <div className="auth-panel">
         <p className="eyebrow">YOUR CREATIVE COMMUNITY</p>
-        <h1>{register ? "Make room for more." : "Welcome back."}</h1>
+        <h1>{register ? "Join the studio crowd." : "Welcome back."}</h1>
         <p className="muted">
           {register
-            ? "A new space. A new connection. It starts here."
+            ? "Find a space to create, or open yours to someone new."
             : "Your next creative session is just around the corner."}
         </p>
         <Button

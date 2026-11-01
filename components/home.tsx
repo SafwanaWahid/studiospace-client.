@@ -1,197 +1,288 @@
 "use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, A11y, Keyboard } from "swiper/modules";
+import {
+  Autoplay,
+  Navigation,
+  Pagination,
+  A11y,
+  Keyboard,
+} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import {
   ArrowUpRight,
   ArrowRight,
+  ArrowLeft,
   Camera,
   Film,
   Mic,
   Music2,
   Paintbrush,
-  ShieldCheck,
-  Headphones,
-  BadgeCheck,
   Search,
-  CalendarDays,
-  KeyRound,
-  Sparkles,
+  MapPin,
+  Plus,
+  Check,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { StudioCard, Skeleton, ErrorState, Empty, useResource } from "./shared";
 import { type Studio, categories } from "@/lib/types";
+
 const slides = [
   {
-    title: (
-      <>
-        Room for your
-        <br />
-        next <em>big idea.</em>
-      </>
-    ),
-    text: "From the first spark to the final take. Discover inspiring studios and creative spaces, ready when you are.",
-    image: "photo-1497366754035-f200968a6e72",
-    label: "SPACE TO CREATE. FREEDOM TO EXPLORE.",
+    image: "/media/photo-studio.jpg",
+    alt: "Photographer and model reviewing a shot beside professional studio lights",
+    category: "Photography",
+    note: "Light, space, and a fresh perspective.",
   },
   {
-    title: (
-      <>
-        Find your light.
-        <br />
-        <em>Make your mark.</em>
-      </>
-    ),
-    text: "Natural light, seamless backdrops, and a fresh perspective. Find the right setting for your next shoot.",
-    image: "photo-1497366811353-6870744d04b2",
-    label: "A FRESH PERSPECTIVE STARTS HERE.",
+    image: "/media/film-stage.jpg",
+    alt: "Camera crew and lighting rig working on a studio film production",
+    category: "Film & production",
+    note: "From the first setup to the final take.",
   },
   {
-    title: (
-      <>
-        Good ideas
-        <br />
-        deserve <em>great sound.</em>
-      </>
-    ),
-    text: "Book a focused space for your next recording, podcast conversation, or collaborative session.",
-    image: "photo-1598488035139-bdbb2231ce04",
-    label: "TURN YOUR NEXT IDEA UP.",
+    image: "/media/podcast-room.jpg",
+    alt: "A microphone in a recording studio",
+    category: "Podcasts & recording",
+    note: "A room for conversations worth recording.",
   },
 ];
+const categoryPhotos = [
+  "photo-studio",
+  "film-stage",
+  "podcast-room",
+  "music-suite",
+  "workshop",
+];
 const categoryIcons = [Camera, Film, Mic, Music2, Paintbrush];
+
 export function BookingSteps() {
+  const steps = [
+    [
+      "Find your space.",
+      "Browse by studio type, location, and hourly rate. Check the photos and what’s included.",
+    ],
+    [
+      "Pick your hours.",
+      "Choose a future start and end time. See the studio charge and deposit before requesting.",
+    ],
+    [
+      "Send your request.",
+      "Your host confirms the session. Follow its status from your bookings page.",
+    ],
+    [
+      "Make good work.",
+      "Arrive with your team and your ideas. Your studio details are all in one place.",
+    ],
+  ];
   return (
-    <section className="section container" id="how-it-works">
-      <div className="center-heading">
-        <p className="eyebrow">LESS PLANNING. MORE CREATING.</p>
-        <h2>From inspiration to action.</h2>
-        <p className="muted">The right space shouldn’t be the hard part.</p>
+    <section className="container section workflow" id="how-it-works">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">FROM SEARCH TO SESSION</p>
+          <h2>
+            Less organising.
+            <br />
+            More creating.
+          </h2>
+        </div>
+        <Link href="/how-it-works" className="text-link">
+          How booking works <ArrowUpRight size={18} />
+        </Link>
       </div>
       <div className="steps-grid">
-        {[
-          [
-            Search,
-            "Discover spaces",
-            "Find the right atmosphere, equipment, and location for your project.",
-          ],
-          [
-            CalendarDays,
-            "Select shoot hours",
-            "Choose your date and hours with clear, upfront pricing.",
-          ],
-          [
-            KeyRound,
-            "Book instantly",
-            "Send your reservation request. Your host confirms availability.",
-          ],
-          [
-            Sparkles,
-            "Create & produce",
-            "Bring your people, your ideas, and your next big thing.",
-          ],
-        ].map(([Icon, title, text], index) => {
-          const Glyph = Icon as typeof Search;
-          return (
-            <div className="step" key={index}>
-              <div className="step-top">
-                <Glyph size={24} />
-                <span>0{index + 1}</span>
-              </div>
-              <h3>{title as string}</h3>
-              <p>{text as string}</p>
+        {steps.map(([title, text], index) => (
+          <article className="step" key={title}>
+            <div className="step-top">
+              <span>0{index + 1}</span>
+              <ArrowUpRight size={22} />
             </div>
-          );
-        })}
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
+
 export default function Home() {
   const { data, loading, error, reload } = useResource<Studio[]>(
     "/studios?featured=true",
   );
+  const [slide, setSlide] = useState(1);
   return (
     <>
-      <section className="hero">
-        <Swiper
-          modules={[Autoplay, Pagination, A11y, Keyboard]}
-          keyboard={{ enabled: true }}
-          autoplay={{
-            delay: 6500,
-            disableOnInteraction: true,
-            pauseOnMouseEnter: true,
-          }}
-          pagination={{ clickable: true }}
-          loop
-          className="hero-swiper"
-        >
-          {slides.map((slide, index) => (
-            <SwiperSlide key={slide.label}>
-              <div
-                className="hero-slide"
-                style={{
-                  backgroundImage: `linear-gradient(90deg,rgba(10,17,15,.82),rgba(10,17,15,.18)),url(https://images.unsplash.com/${slide.image}?auto=format&fit=crop&w=2200&q=85)`,
-                }}
-              >
-                <div className="container hero-content">
-                  <p className="eyebrow">
-                    <span className="tiny-dot" />
-                    {slide.label}
-                  </p>
-                  <h1>{slide.title}</h1>
-                  <p className="hero-copy">{slide.text}</p>
-                  <div className="hero-actions">
-                    <Button asChild>
-                      <Link href="/studios">
-                        Explore studios <ArrowUpRight size={18} />
-                      </Link>
-                    </Button>
-                    <Link href="/studios" className="hero-secondary">
-                      Host your space <ArrowUpRight size={17} />
-                    </Link>
-                  </div>
-                  <div className="hero-note">
-                    <span className="mini-aperture">
-                      <Camera size={18} />
-                    </span>
-                    <div>
-                      Spaces for every kind of creator.
-                      <small>Photography · Film · Sound · Art</small>
+      <section className="landing-hero container">
+        <div className="hero-editorial">
+          <div className="hero-intro">
+            <p className="eyebrow">
+              <span className="status-dot" />
+              FOR THE WORK YOU WANT TO MAKE
+            </p>
+            <h1>
+              Good work.
+              <br />
+              Great{" "}
+              <span className="hero-word">
+                space
+                <svg viewBox="0 0 360 25" aria-hidden="true">
+                  <path d="M4 15C74 2 217 3 350 12M27 23C128 11 236 12 325 20" />
+                </svg>
+                .
+              </span>
+            </h1>
+            <p className="hero-description">
+              Photo shoots. Podcast sessions. First takes.
+              <br className="desktop-break" /> Find your studio, book your
+              hours, get to work.
+            </p>
+            <div className="hero-actions">
+              <Button asChild>
+                <Link href="/studios">
+                  Explore studios <ArrowUpRight size={19} />
+                </Link>
+              </Button>
+              <Link className="text-link" href="/add-studio">
+                Have a space? List it <ArrowUpRight size={16} />
+              </Link>
+            </div>
+            <div className="hero-footnote">
+              <span>PHOTO</span>
+              <span>FILM</span>
+              <span>SOUND</span>
+              <span>ART</span>
+            </div>
+          </div>
+          <div className="hero-gallery">
+            <div className="gallery-label">
+              <span>
+                <span className="status-dot" />A DIFFERENT KIND OF WORKSPACE
+              </span>
+              <span>STUDIO / 0{slide}</span>
+            </div>
+            <Swiper
+              modules={[Autoplay, Navigation, Pagination, A11y, Keyboard]}
+              keyboard={{ enabled: true }}
+              onSwiper={(swiper) => {
+                if (
+                  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                )
+                  swiper.autoplay.stop();
+              }}
+              navigation={{ prevEl: ".cover-prev", nextEl: ".cover-next" }}
+              autoplay={{
+                delay: 7000,
+                disableOnInteraction: true,
+                pauseOnMouseEnter: true,
+              }}
+              pagination={{ clickable: true }}
+              onSlideChange={(swiper) => setSlide(swiper.realIndex + 1)}
+              loop
+              className="cover-swiper"
+            >
+              {slides.map((item, index) => (
+                <SwiperSlide key={item.image}>
+                  <div className="cover-frame">
+                    <Image
+                      src={item.image}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 760px) 100vw, 55vw"
+                      priority={index === 0}
+                    />
+                    <div className="cover-caption">
+                      <span>{item.category}</span>
+                      <p>{item.note}</p>
                     </div>
                   </div>
-                </div>
-                <span className="hero-counter">
-                  0{index + 1} <span>/ 03</span>
-                </span>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <div className="cover-controls">
+              <span>ROOM TO DO YOUR THING.</span>
+              <div>
+                <button
+                  className="cover-prev"
+                  aria-label="Previous studio photo"
+                >
+                  <ArrowLeft size={19} />
+                </button>
+                <button className="cover-next" aria-label="Next studio photo">
+                  <ArrowRight size={19} />
+                </button>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            </div>
+          </div>
+        </div>
+        <form className="home-search" action="/studios" method="get">
+          <label>
+            <span>WHAT ARE YOU MAKING?</span>
+            <div>
+              <Search size={18} />
+              <select
+                name="category"
+                aria-label="Choose a studio category"
+                defaultValue=""
+              >
+                <option value="">Find your kind of space</option>
+                {categories.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+          </label>
+          <label>
+            <span>WHERE DO YOU WANT TO CREATE?</span>
+            <div>
+              <MapPin size={18} />
+              <input
+                name="search"
+                placeholder="City or neighbourhood"
+                aria-label="City or neighbourhood"
+              />
+            </div>
+          </label>
+          <Button type="submit">
+            Find a space <ArrowUpRight size={18} />
+          </Button>
+        </form>
       </section>
-      <div className="intro-strip">
-        <div className="container">
-          <span>BIG IDEAS NEED THE RIGHT SPACE.</span>
-          <p>
-            Find yours. Make something extraordinary. <ArrowUpRight size={16} />
-          </p>
+      <div className="studio-ticker" aria-label="Studio categories">
+        <div>
+          <span>MAKE SOMETHING REAL</span>
+          <span aria-hidden="true">✳</span>
+          <span>FIND YOUR FOCUS</span>
+          <span aria-hidden="true">✳</span>
+          <span>ROOM FOR YOUR CREW</span>
+          <span aria-hidden="true">✳</span>
+          <span>CREATE ON YOUR TERMS</span>
+          <span aria-hidden="true">✳</span>
         </div>
       </div>
-      <section className="container section">
+      <section className="container section featured-section">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">CURATED SPACES. ENDLESS POSSIBILITIES.</p>
-            <h2>Your next creative backdrop.</h2>
-            <p className="muted">
-              Fresh spaces to bring a fresh perspective to your work.
-            </p>
+            <p className="eyebrow">THE LATEST SPACES</p>
+            <h2>
+              Spaces worth
+              <br />
+              showing up for.
+            </h2>
           </div>
-          <Link href="/studios" className="text-link">
-            Explore all studios <ArrowRight size={17} />
-          </Link>
+          <div className="heading-aside">
+            <p>
+              Independent spaces. Clear hourly rates.
+              <br />A setting for whatever comes next.
+            </p>
+            <Link href="/studios" className="text-link">
+              View all studios <ArrowUpRight size={18} />
+            </Link>
+          </div>
         </div>
         {loading ? (
           <Skeleton cards={6} />
@@ -199,10 +290,10 @@ export default function Home() {
           <ErrorState message={error} retry={reload} />
         ) : !data?.length ? (
           <Empty
-            title="Be the first to open your doors"
-            description="Our studio collection is just getting started. List your space and welcome the next wave of creators."
+            title="The collection starts with you."
+            description="List a studio and give someone a place to make their next project."
             href="/add-studio"
-            action="List a studio"
+            action="List your space"
           />
         ) : (
           <div className="studio-grid">
@@ -216,13 +307,12 @@ export default function Home() {
         <div className="container section">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">FIND YOUR ELEMENT</p>
-              <h2>Different spaces. Same creative spirit.</h2>
+              <p className="eyebrow">FIVE WAYS TO MAKE IT HAPPEN</p>
+              <h2>What’s your thing?</h2>
             </div>
             <p className="muted narrow">
-              Whatever you’re making, there’s a space
-              <br />
-              that feels like it was made for you.
+              A quiet room to record. A set to shoot.
+              <br />A table to cover in ideas.
             </p>
           </div>
           <div className="category-grid">
@@ -230,26 +320,26 @@ export default function Home() {
               const Icon = categoryIcons[index];
               return (
                 <Link
+                  className="category-card"
                   href={`/studios?category=${encodeURIComponent(category)}`}
                   key={category}
-                  className="category-card"
                 >
-                  <div>
-                    <Icon size={29} strokeWidth={1.4} />
-                    <ArrowUpRight size={17} />
+                  <div className="category-photo">
+                    <Image
+                      src={`/media/${categoryPhotos[index]}.jpg`}
+                      alt={`${category} creative workspace`}
+                      fill
+                      sizes="(max-width: 600px) 45vw, (max-width: 900px) 30vw, 20vw"
+                    />
+                    <span className="category-number">0{index + 1}</span>
+                    <span className="category-arrow">
+                      <ArrowUpRight size={21} />
+                    </span>
                   </div>
-                  <h3>{category}</h3>
-                  <p>
-                    {
-                      [
-                        "Chase the perfect light.",
-                        "Set the scene.",
-                        "Start the conversation.",
-                        "Find your next sound.",
-                        "Get your hands into it.",
-                      ][index]
-                    }
-                  </p>
+                  <div className="category-title">
+                    <Icon size={18} />
+                    <h3>{category}</h3>
+                  </div>
                 </Link>
               );
             })}
@@ -257,78 +347,144 @@ export default function Home() {
         </div>
       </section>
       <BookingSteps />
-      <section className="container support-section">
-        <div className="support-image">
-          <Image
-            unoptimized
-            width={1200}
-            height={800}
-            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1100&q=80"
-            alt="Bright creative workspace with comfortable seating and shared tables"
-            loading="lazy"
-          />
-          <span>
-            GOOD SPACES.
-            <br />
-            GREAT PEACE OF MIND.
-          </span>
+      <section className="creator-section">
+        <div className="container creator-grid">
+          <div className="creator-visual">
+            <Image
+              src="/media/color-studio.jpg"
+              alt="Lighting equipment arranged around a colourful studio production set"
+              fill
+              sizes="(max-width: 760px) 100vw, 50vw"
+            />
+            <span className="image-corner top-left" />
+            <span className="image-corner bottom-right" />
+            <div className="creator-stamp">
+              LESS GUESSWORK.
+              <br />
+              BETTER SESSIONS.
+            </div>
+          </div>
+          <div className="creator-copy">
+            <p className="eyebrow">BEFORE YOU HIT RECORD</p>
+            <h2>
+              Know the space.
+              <br />
+              Meet the host.
+              <br />
+              <em>Make it yours.</em>
+            </h2>
+            <p>
+              Good sessions start with clear expectations. Look through the
+              details before you book, so you can focus on the work when you
+              arrive.
+            </p>
+            <div className="creator-checks">
+              {[
+                [
+                  "Your host, in plain sight",
+                  "See the host’s name and details on every listing.",
+                ],
+                [
+                  "Equipment, without the guesswork",
+                  "Check amenities and agree handling with your host.",
+                ],
+                [
+                  "Deposits up front",
+                  "Review the hourly rate and security deposit before requesting.",
+                ],
+                [
+                  "One place for your session",
+                  "Keep reservation times, host details, and status together.",
+                ],
+              ].map(([title, text]) => (
+                <div key={title}>
+                  <Check size={17} />
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="support-content">
-          <p className="eyebrow">WE’RE IN YOUR CORNER</p>
-          <h2>Create with confidence.</h2>
-          <p className="muted">
-            A little reassurance goes a long way. Here’s how hosts and creators
-            can work together with clarity.
-          </p>
+      </section>
+      <section className="container section faq-section">
+        <div>
+          <p className="eyebrow">A FEW THINGS TO KNOW</p>
+          <h2>
+            Before you
+            <br />
+            make a move.
+          </h2>
+          <Link href="/how-it-works" className="text-link">
+            More about booking <ArrowUpRight size={18} />
+          </Link>
+        </div>
+        <div className="faq-list">
           {[
             [
-              ShieldCheck,
-              "Clear protection expectations",
-              "Discuss liability cover and deposits with your host before your session.",
+              "How does a studio booking work?",
+              "Pick a studio and request a future time slot. Your reservation starts as Pending. The host reviews the request and confirms the hours from their Dashboard.",
             ],
             [
-              BadgeCheck,
-              "Profiles with a personal touch",
-              "See who’s hosting and keep your booking connected to your account.",
+              "What’s included in the price?",
+              "Each listing shows its hourly rate and security deposit. The booking form calculates an estimate from your chosen hours. Check the studio’s amenities for included equipment.",
             ],
             [
-              Camera,
-              "Respect for every piece of gear",
-              "Check included amenities and agree equipment handling before you arrive.",
+              "Can I cancel a request?",
+              "Yes. Cancel a Pending reservation from My Bookings. Once the host confirms, this assignment’s booking flow does not offer cancellation.",
             ],
             [
-              Headphones,
-              "Support for every session",
-              "Your booking keeps host details together. Round-the-clock platform support is planned.",
+              "Can I list my own studio?",
+              "Yes. Create an account, open Add New Studio, and enter photos, rates, location, amenities, and a detailed description. Manage your listing and requests from your profile menu.",
             ],
-          ].map(([Icon, title, text], index) => {
-            const Glyph = Icon as typeof ShieldCheck;
-            return (
-              <div className="assurance" key={index}>
-                <Glyph size={22} />
-                <div>
-                  <h3>{title as string}</h3>
-                  <p>{text as string}</p>
-                </div>
-              </div>
-            );
-          })}
+          ].map(([question, answer]) => (
+            <details key={question}>
+              <summary>
+                {question}
+                <Plus size={18} />
+              </summary>
+              <p>{answer}</p>
+            </details>
+          ))}
         </div>
       </section>
       <section className="container host-cta">
-        <div>
-          <p className="eyebrow">YOUR SPACE. SOMEONE’S NEXT BIG THING.</p>
-          <h2>Great space? Share the possibilities.</h2>
+        <div className="host-cta-copy">
+          <p className="eyebrow">FOR THE PEOPLE WITH THE KEYS</p>
+          <h2>
+            Your space.
+            <br />
+            Their next great project.
+          </h2>
           <p>
-            Turn your studio’s free hours into someone else’s creative
-            breakthrough.
+            Put your studio’s free hours to work.
+            <br />
+            Set your rate. Meet your next creator.
           </p>
+          <Button asChild>
+            <Link href="/add-studio">
+              List your studio <ArrowUpRight size={19} />
+            </Link>
+          </Button>
         </div>
-        <Button asChild>
-          <Link href="/add-studio">
-            Become a host <ArrowUpRight size={18} />
-          </Link>
-        </Button>
+        <div className="host-cta-art">
+          <Image
+            src="/media/music-suite.jpg"
+            alt="Recording equipment and mixing console inside a music studio"
+            fill
+            sizes="(max-width: 600px) 100vw, 40vw"
+          />
+          <div className="host-sticker">
+            <span>
+              OPEN
+              <br />
+              FOR IDEAS.
+            </span>
+            <ArrowUpRight size={38} />
+          </div>
+        </div>
       </section>
     </>
   );

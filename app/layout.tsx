@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+const bodyFont = localFont({
+  src: "./fonts/Manrope.ttf",
+  variable: "--font-body",
+  display: "swap",
+  weight: "200 800",
+});
+const displayFont = localFont({
+  src: "./fonts/BricolageGrotesque.ttf",
+  variable: "--font-display",
+  display: "swap",
+  weight: "200 800",
+});
 import { Shell } from "@/components/shell";
 import "./globals.css";
 export const metadata: Metadata = {
   title: {
-    default: "StudioSpace — Room for your next big idea",
+    default: "StudioSpace — Good work. Great space.",
     template: "%s | StudioSpace",
   },
   description:
@@ -14,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${bodyFont.variable} ${displayFont.variable}`}>
         <Shell>{children}</Shell>
       </body>
     </html>

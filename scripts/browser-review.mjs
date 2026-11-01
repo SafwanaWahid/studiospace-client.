@@ -260,10 +260,6 @@ import { chromium } from "playwright";
       () => document.documentElement.scrollWidth > innerWidth,
     );
     if (overflow) throw Error("Overflow at " + width);
-    await page.screenshot({
-      path: "/tmp/studio-home-" + width + "-v2.png",
-      fullPage: true,
-    });
     checks.push("no overflow " + width);
   }
   await page.setViewportSize({ width: 390, height: 844 });

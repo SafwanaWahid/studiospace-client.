@@ -55,12 +55,10 @@ The visual identity uses Manrope and Bricolage Grotesque, ink/off-white/lime col
 
 ## Examiner test credentials
 
-Before submission, create two dedicated accounts on the live site and fill this in. No live accounts have been provisioned in this source package.
-
 |Role|Email|Password|
 |-|-|-|
-|Host|TO BE CREATED|TO BE CREATED|
-|Creator|TO BE CREATED|TO BE CREATED|
+|Host|safwanazuha@gmail.com|Idkidkidk|
+|Creator|safwanabintuwahid@gmail.com|xaT4MFNaN4ierFK|
 
 Host: Dashboard → incoming bookings, My Studio Listings → update/delete. Creator: Explore Studios → details → request booking → My Bookings.
 

@@ -418,7 +418,7 @@ export default function Home() {
             </div>
           </div>
           <div className="creator-copy">
-            <p className="eyebrow">HOST SAFETY & CREATOR SUPPORT</p>
+            <p className="eyebrow">CLEAR EXPECTATIONS FOR EVERY SESSION</p>
             <h2>
               Know the space.
               <br />

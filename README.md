@@ -6,16 +6,18 @@ A peer-to-peer creative workspace marketplace built for photography, filmmaking,
 
 ## Features
 
-* Three-slide studio photography hero with working category/location search and MongoDB-powered featured studios.
-* Category browsing, studio/location search, and hourly price sorting.
-* Better Auth email/password and Google authentication with persistent sessions.
-* Host-owned studio creation, image uploading, editing, and confirmed deletion dialogs.
-* Detailed studio galleries, amenities, host profiles, availability, and reviews display.
-* Booking requests, cancellation of pending reservations, and host confirmation/completion.
-* HTTPOnly-cookie JWT authorization with server-side session and ownership checks.
-* Transaction-based prevention of overlapping confirmed reservations.
-* Persistent light/dark theme, locally bundled fonts and photographs, responsive cards, skeletons, empty states, and custom 404.
-* Repeatable 18-check browser review covering discovery, authentication guards, hosting forms, dialogs, and mobile layouts.
+- Three-slide studio photography hero with working category/location search and MongoDB-powered featured studios.
+- Category browsing, studio/location search, and hourly price sorting.
+- Better Auth email/password and Google authentication with persistent sessions.
+- Host-owned studio creation, image uploading, editing, and confirmed deletion dialogs.
+- Detailed studio galleries, amenities, host profiles, availability, and reviews display.
+- Booking requests, cancellation of pending reservations, and host confirmation/completion.
+- Saved studios wishlist backed by the server API.
+- Printable booking invoices for confirmed or completed reservations. Invoices show an estimate; the app does not process payments.
+- HTTPOnly-cookie JWT authorization with server-side session and ownership checks.
+- Transaction-based prevention of overlapping confirmed reservations.
+- Persistent light/dark theme, locally bundled fonts and photographs, responsive cards, skeletons, empty states, and custom 404.
+- Repeatable 18-check browser review covering discovery, authentication guards, hosting forms, dialogs, and mobile layouts.
 
 ## Tech stack
 
@@ -31,7 +33,7 @@ Copy-Item .env.example .env.local
 npm run dev
 ```
 
-Start the separately supplied server on port 5000. Open http://localhost:3000. `.env.local` contains `API\\\\\\\_SERVER\\\\\\\_URL=http://localhost:5000`. Do not place credentials in NEXT\_PUBLIC variables.
+Start the separately supplied server on port 5000. Open http://localhost:3000. `.env.local` contains `API_SERVER_URL=http://localhost:5000`. Do not place credentials in NEXT_PUBLIC variables.
 
 ## Checks
 
@@ -55,27 +57,29 @@ The visual identity uses Manrope and Bricolage Grotesque, ink/off-white/lime col
 
 ## Examiner test credentials
 
-|Role|Email|Password|
-|-|-|-|
-|Host|safwanazuha@gmail.com|Idkidkidk|
-|Creator|safwanabintuwahid@gmail.com|xaT4MFNaN4ierFK|
+The assignment asks for examiner credentials in this README. Use dedicated live accounts with no personal data, then enter their current sign-in details in the submission copy of this table.
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Host | safwanazuha@gmail.com | Idkidkidk |
+| Creator | safwanabintuwahid@gmail.com | xaT4MFNaN4ierFK |
 
 Host: Dashboard → incoming bookings, My Studio Listings → update/delete. Creator: Explore Studios → details → request booking → My Bookings.
 
 ## Routes
 
-`/`, `/studios`, `/studios/\\\\\\\[id]`, `/login`, `/register`, `/how-it-works`, `/about`, `/terms`, `/dashboard`, `/add-studio`, `/my-listings`, `/my-bookings`, `/studios/edit/\\\\\\\[id]`.
+`/`, `/studios`, `/studios/[id]`, `/login`, `/register`, `/how-it-works`, `/about`, `/terms`, `/dashboard`, `/add-studio`, `/my-listings`, `/my-bookings`, `/studios/edit/[id]`.
 
 Private routes wait for the authentication session before deciding whether to redirect. The server independently authorizes access to private data and every mutation.
 
 ## Deployment
 
-Deploy the server first. Set `API\\\\\\\_SERVER\\\\\\\_URL` on the client to the HTTPS server origin before building. On the server, set `CLIENT\\\\\\\_URL` to the exact client origin. Configure Google's callback as `CLIENT\\\\\\\_ORIGIN/api/auth/callback/google`. See the supplied START-HERE guide for the full sequence.
+Deploy the server first. Set `API_SERVER_URL` on the client to the HTTPS server origin before building. On the server, set `CLIENT_URL` to the exact client origin. Configure Google's callback as `CLIENT_ORIGIN/api/auth/callback/google`. See the supplied START-HERE guide for the full sequence.
 
 ## Content and boundaries
 
-Seed studios are illustrative and have no invented review scores. The app displays stored reviews but does not include a review-writing flow. No payment is processed. Optional PDF invoices and wishlists are not implemented. Newsletter, insurance coverage, and 24/7 staffed support are not represented as active services. Photos use Unsplash image URLs.
+Seed studios are illustrative and have no invented review scores. Cards label unrated listings as “New”; the app displays stored reviews but does not include a review-writing flow. No payment is processed. Newsletter, identity verification, liability insurance, and 24/7 staffed support are not represented as active services. Confirm equipment, access, and safety details with each host. Photos use Unsplash image URLs.
 
 ## Verified revision
 
-Production build and lint pass. The browser review has 18 passing checks with explicit API fixtures. Separate API integration and full-stack browser-to-database checks passed against a temporary MongoDB replica set. Google OAuth, ImgBB file uploads, and deployed client/server origins have been tested on the live site.
+Production build and lint passed in the prior project review. The browser review has 18 passing checks with explicit API fixtures. Separate API integration and full-stack browser-to-database checks passed against a temporary MongoDB replica set. The deployed home, studio listing, studio details route, and server health endpoint were checked on 3 November 2026. Google OAuth and deployed origins were previously tested. ImgBB uploads require the server-side `IMGBB_API_KEY`; verify an actual upload on the live site before submission.

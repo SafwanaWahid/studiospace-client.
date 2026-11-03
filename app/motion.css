@@ -36,18 +36,72 @@ html[data-motion="full"] .reading-progress {
 .motion-toggle:hover {
   border-color: var(--text);
 }
-[data-reveal] {
-  transition:
-    opacity 0.65s var(--motion-ease) var(--reveal-delay, 0ms),
-    transform 0.8s var(--motion-ease) var(--reveal-delay, 0ms);
+@keyframes section-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
-html[data-motion="full"] [data-reveal]:not([data-revealed]) {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
+html[data-motion="full"] :is(
+    .section-heading,
+    .studio-card,
+    .category-card,
+    .step,
+    .creator-visual,
+    .creator-copy,
+    .faq-section > div,
+    .host-cta-copy,
+    .host-cta-art,
+    .footer-top > div,
+    .footer-wordmark,
+    .auth-photo,
+    .auth-panel,
+    .editor-form > .panel,
+    .listing-row,
+    .booking-row,
+    .stat,
+    .detail-heading,
+    .gallery,
+    .detail-section,
+    .booking-panel,
+    .filters,
+    .category-tabs
+  ) {
+  animation: section-reveal 0.8s var(--motion-ease) both;
 }
-html[data-motion="full"] [data-reveal][data-revealed] {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+@supports (animation-timeline: view()) {
+  html[data-motion="full"] :is(
+      .section-heading,
+      .studio-card,
+      .category-card,
+      .step,
+      .creator-visual,
+      .creator-copy,
+      .faq-section > div,
+      .host-cta-copy,
+      .host-cta-art,
+      .footer-top > div,
+      .footer-wordmark,
+      .auth-photo,
+      .auth-panel,
+      .editor-form > .panel,
+      .listing-row,
+      .booking-row,
+      .stat,
+      .detail-heading,
+      .gallery,
+      .detail-section,
+      .booking-panel,
+      .filters,
+      .category-tabs
+    ) {
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
 }
 .headline-mask {
   display: block;

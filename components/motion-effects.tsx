@@ -31,29 +31,6 @@ function subscribe(callback: () => void) {
 }
 
 const serverMode = () => "reduced";
-const targets = [
-  ".section-heading",
-  ".studio-card",
-  ".category-card",
-  ".step",
-  ".creator-visual",
-  ".creator-copy",
-  ".faq-section > div",
-  ".host-cta-copy",
-  ".host-cta-art",
-  ".footer-top > div",
-  ".editor-form > .panel",
-  ".listing-row",
-  ".booking-row",
-  ".stat",
-  ".detail-heading",
-  ".gallery",
-  ".detail-section",
-  ".booking-panel",
-  ".filters",
-  ".category-tabs",
-].join(",");
-
 export function MotionEffects() {
   const pathname = usePathname();
   const mode = useSyncExternalStore(subscribe, getMotionMode, serverMode);
@@ -61,60 +38,7 @@ export function MotionEffects() {
   useEffect(() => {
     document.documentElement.dataset.motion = mode;
     window.dispatchEvent(new Event("studiospace:motion"));
-    if (mode !== "full" || !("IntersectionObserver" in window)) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          (entry.target as HTMLElement).dataset.revealed = "true";
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -32px 0px" },
-    );
-
-    const scan = () => {
-      document.querySelectorAll<HTMLElement>(targets).forEach((element) => {
-        if (element.dataset.reveal !== undefined) {
-          if (!element.dataset.revealed) observer.observe(element);
-          return;
-        }
-        const parent = element.parentElement;
-        const stagger = parent?.matches(
-          ".studio-grid,.category-grid,.steps-grid,.dashboard-grid,.footer-top",
-        );
-        const index =
-          stagger && parent ? Array.from(parent.children).indexOf(element) : 0;
-        element.style.setProperty(
-          "--reveal-delay",
-          `${Math.min(index % 5, 3) * 85}ms`,
-        );
-        element.dataset.reveal = "";
-        observer.observe(element);
-      });
-    };
-
-    let scanFrame = 0;
-    const mutations = new MutationObserver(() => {
-      if (scanFrame) return;
-      scanFrame = requestAnimationFrame(() => {
-        scanFrame = 0;
-        scan();
-      });
-    });
-    scan();
-    mutations.observe(document.body, { childList: true, subtree: true });
-
-    const revealFocus = (event: FocusEvent) => {
-      if (!(event.target instanceof HTMLElement)) return;
-      const element = event.target.closest<HTMLElement>("[data-reveal]");
-      if (element) {
-        element.dataset.revealed = "true";
-        observer.unobserve(element);
-      }
-    };
-    document.addEventListener("focusin", revealFocus);
+    if (mode !== "full") return;
 
     let progressFrame = 0;
     const updateProgress = () => {
@@ -135,11 +59,7 @@ export function MotionEffects() {
     window.addEventListener("resize", scheduleProgress);
 
     return () => {
-      observer.disconnect();
-      mutations.disconnect();
-      cancelAnimationFrame(scanFrame);
       cancelAnimationFrame(progressFrame);
-      document.removeEventListener("focusin", revealFocus);
       window.removeEventListener("scroll", scheduleProgress);
       window.removeEventListener("resize", scheduleProgress);
     };

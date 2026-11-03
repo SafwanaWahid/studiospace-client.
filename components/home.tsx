@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Swiper as SwiperInstance } from "swiper";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,9 +11,8 @@ import {
   Pagination,
   A11y,
   Keyboard,
+  EffectFade,
 } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -115,6 +115,27 @@ export default function Home() {
     "/studios?featured=true",
   );
   const [slide, setSlide] = useState(1);
+  const swiperRef = useRef<SwiperInstance | null>(null);
+  useEffect(() => {
+    const sync = () => {
+      const swiper = swiperRef.current;
+      if (!swiper || swiper.destroyed) return;
+      const paused =
+        document.documentElement.dataset.motion === "paused" ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        document.visibilityState === "hidden";
+      swiper.params.speed = paused ? 0 : 900;
+      if (paused) swiper.autoplay.stop();
+      else swiper.autoplay.start();
+    };
+    sync();
+    window.addEventListener("studiospace:motion", sync);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      window.removeEventListener("studiospace:motion", sync);
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
   return (
     <>
       <section className="landing-hero container">
@@ -125,15 +146,20 @@ export default function Home() {
               FOR THE WORK YOU WANT TO MAKE
             </p>
             <h1>
-              Good work.
-              <br />
-              Great{" "}
-              <span className="hero-word">
-                space
-                <svg viewBox="0 0 360 25" aria-hidden="true">
-                  <path d="M4 15C74 2 217 3 350 12M27 23C128 11 236 12 325 20" />
-                </svg>
-                .
+              <span className="headline-mask">
+                <span className="headline-line">Good work.</span>
+              </span>
+              <span className="headline-mask">
+                <span className="headline-line">
+                  Great{" "}
+                  <span className="hero-word">
+                    space
+                    <svg viewBox="0 0 360 25" aria-hidden="true">
+                      <path d="M4 15C74 2 217 3 350 12M27 23C128 11 236 12 325 20" />
+                    </svg>
+                    .
+                  </span>
+                </span>
               </span>
             </h1>
             <p className="hero-description">
@@ -166,10 +192,26 @@ export default function Home() {
               <span>STUDIO / 0{slide}</span>
             </div>
             <Swiper
-              modules={[Autoplay, Navigation, Pagination, A11y, Keyboard]}
+              modules={[
+                Autoplay,
+                Navigation,
+                Pagination,
+                A11y,
+                Keyboard,
+                EffectFade,
+              ]}
+              effect="fade"
+              a11y={{
+                prevSlideMessage: "Previous studio photo",
+                nextSlideMessage: "Next studio photo",
+              }}
+              fadeEffect={{ crossFade: true }}
+              speed={900}
               keyboard={{ enabled: true }}
               onSwiper={(swiper) => {
+                swiperRef.current = swiper;
                 if (
+                  document.documentElement.dataset.motion === "paused" ||
                   window.matchMedia("(prefers-reduced-motion: reduce)").matches
                 )
                   swiper.autoplay.stop();
@@ -252,16 +294,26 @@ export default function Home() {
           </Button>
         </form>
       </section>
-      <div className="studio-ticker" aria-label="Studio categories">
-        <div>
-          <span>MAKE SOMETHING REAL</span>
-          <span aria-hidden="true">✳</span>
-          <span>FIND YOUR FOCUS</span>
-          <span aria-hidden="true">✳</span>
-          <span>ROOM FOR YOUR CREW</span>
-          <span aria-hidden="true">✳</span>
-          <span>CREATE ON YOUR TERMS</span>
-          <span aria-hidden="true">✳</span>
+      <div
+        className="studio-ticker"
+        aria-label="Make something real. Find your focus. Room for your crew. Create on your terms."
+      >
+        <div className="ticker-track" aria-hidden="true">
+          {[0, 1].map((copy) => (
+            <div className="ticker-group" key={copy}>
+              {[
+                "MAKE SOMETHING REAL",
+                "FIND YOUR FOCUS",
+                "ROOM FOR YOUR CREW",
+                "CREATE ON YOUR TERMS",
+              ].map((label) => (
+                <span className="ticker-item" key={label}>
+                  <span>{label}</span>
+                  <span className="ticker-star">✳</span>
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
       <section className="container section featured-section">

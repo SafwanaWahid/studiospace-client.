@@ -1144,28 +1144,6 @@ small {
   background: none;
   color: #d5ee72;
 }
-.footer-wordmark {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--font-display), Arial, sans-serif;
-  font-weight: 600;
-  font-size: clamp(80px, 14.2vw, 205px);
-  letter-spacing: -0.085em;
-  line-height: 0.95;
-  padding: 42px 0 35px;
-  color: #d5ee72;
-}
-.footer-wordmark > span {
-  font-weight: 300;
-  margin-right: auto;
-}
-.footer-wordmark > svg {
-  width: clamp(60px, 11vw, 145px);
-  height: clamp(60px, 11vw, 145px);
-  stroke-width: 0.6;
-  margin-left: 40px;
-}
 .footer-bottom {
   display: flex;
   align-items: center;
@@ -2845,15 +2823,6 @@ label small {
   .newsletter p,
   .newsletter small {
     font-size: 11px;
-  }
-  .footer-wordmark {
-    font-size: 15.7vw;
-    padding: 32px 0 28px;
-  }
-  .footer-wordmark > svg {
-    width: 12vw;
-    height: 12vw;
-    margin-left: 13px;
   }
   .footer-bottom {
     font-size: 8px;

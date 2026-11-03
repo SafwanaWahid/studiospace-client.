@@ -1,0 +1,347 @@
+:root {
+  --motion-ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.reading-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(var(--page-progress, 0));
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+}
+html[data-motion="full"] .reading-progress {
+  opacity: 1;
+}
+.motion-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 10px;
+  line-height: 1.2;
+  box-shadow: 0 3px 16px #0000000a;
+}
+.motion-toggle:hover {
+  border-color: var(--text);
+}
+[data-reveal] {
+  transition:
+    opacity 0.65s var(--motion-ease) var(--reveal-delay, 0ms),
+    transform 0.8s var(--motion-ease) var(--reveal-delay, 0ms);
+}
+html[data-motion="full"] [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+}
+html[data-motion="full"] [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.headline-mask {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.26em;
+  margin-bottom: -0.26em;
+}
+.headline-line {
+  display: block;
+  transform-origin: left bottom;
+}
+html[data-motion="full"] .headline-line {
+  animation: headline-enter 1.05s var(--motion-ease) both;
+}
+html[data-motion="full"] .headline-mask:nth-child(2) .headline-line {
+  animation-delay: 0.13s;
+}
+html[data-motion="full"] .hero-word svg path {
+  stroke-dasharray: 720;
+  stroke-dashoffset: 720;
+  animation: underline-draw 1.15s 0.7s var(--motion-ease) forwards;
+}
+html[data-motion="full"] .hero-intro > .eyebrow {
+  animation: soft-enter 0.75s 0.08s var(--motion-ease) both;
+}
+html[data-motion="full"] .hero-description {
+  animation: soft-enter 0.8s 0.3s var(--motion-ease) both;
+}
+html[data-motion="full"] .hero-actions {
+  animation: soft-enter 0.8s 0.42s var(--motion-ease) both;
+}
+html[data-motion="full"] .hero-footnote {
+  animation: soft-enter 0.8s 0.55s var(--motion-ease) both;
+}
+html[data-motion="full"] .hero-gallery {
+  animation: photo-enter 1.1s 0.15s var(--motion-ease) both;
+}
+html[data-motion="full"] .home-search {
+  animation: soft-enter 0.9s 0.55s var(--motion-ease) both;
+}
+html[data-motion="full"] .swiper-slide-active .cover-frame > img {
+  animation: photo-drift 8s ease-out both;
+}
+html[data-motion="full"] .swiper-slide-active .cover-caption > span {
+  display: inline-block;
+  animation: soft-enter 0.7s 0.15s var(--motion-ease) both;
+}
+html[data-motion="full"] .swiper-slide-active .cover-caption > p {
+  animation: soft-enter 0.7s 0.25s var(--motion-ease) both;
+}
+.studio-ticker > .ticker-track {
+  display: flex;
+  width: max-content;
+  max-width: none;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+}
+.ticker-group {
+  min-width: 100vw;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0;
+}
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 19px 30px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.ticker-star {
+  display: inline-block;
+  font-size: 22px;
+  line-height: 1;
+}
+html[data-motion="full"] .ticker-track {
+  animation: ticker-travel 32s linear infinite;
+}
+html[data-motion="full"] .ticker-star {
+  animation: star-turn 12s linear infinite;
+}
+.studio-ticker:hover .ticker-track,
+.studio-ticker:hover .ticker-star {
+  animation-play-state: paused;
+}
+html[data-motion="full"] .studio-card:hover .card-image {
+  box-shadow: 0 16px 30px #00000012;
+}
+.card-image {
+  transition: box-shadow 0.35s ease;
+}
+.card-open {
+  transition:
+    transform 0.35s var(--motion-ease),
+    background 0.2s ease;
+}
+html[data-motion="full"] .studio-card:hover .card-open {
+  transform: rotate(45deg);
+}
+html[data-motion="full"] .category-card:hover .category-arrow {
+  transform: translate(3px, -3px);
+}
+.category-arrow {
+  transition: transform 0.35s var(--motion-ease);
+}
+.btn > svg,
+.text-link > svg {
+  transition: transform 0.25s var(--motion-ease);
+}
+html[data-motion="full"] .btn:hover > svg {
+  transform: translate(3px, -2px);
+}
+html[data-motion="full"] .dropdown {
+  animation: menu-enter 0.22s var(--motion-ease) both;
+  transform-origin: top right;
+}
+html[data-motion="full"] .mobile-nav {
+  animation: soft-enter 0.25s var(--motion-ease) both;
+}
+html[data-motion="full"] .modal[open] {
+  animation: dialog-enter 0.3s var(--motion-ease) both;
+}
+html[data-motion="full"] .modal[open]::backdrop {
+  animation: backdrop-enter 0.25s ease both;
+}
+html[data-motion="full"] .faq-list details[open] > p {
+  animation: soft-enter 0.3s var(--motion-ease) both;
+}
+html[data-motion="paused"] *,
+html[data-motion="paused"] *:before,
+html[data-motion="paused"] *:after {
+  animation-play-state: paused !important;
+}
+html[data-motion="paused"] [data-reveal],
+html[data-motion="reduced"] [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+html[data-motion="paused"] .headline-line,
+html[data-motion="paused"] .hero-intro > .eyebrow,
+html[data-motion="paused"] .hero-description,
+html[data-motion="paused"] .hero-actions,
+html[data-motion="paused"] .hero-footnote,
+html[data-motion="paused"] .hero-gallery,
+html[data-motion="paused"] .home-search,
+html[data-motion="paused"] .cover-caption > span,
+html[data-motion="paused"] .cover-caption > p {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+html[data-motion="paused"] .hero-word svg path {
+  stroke-dashoffset: 0;
+  animation: none !important;
+}
+@keyframes headline-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 115%, 0) rotate(3deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+@keyframes soft-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes photo-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    clip-path: inset(10% 0 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0);
+  }
+}
+@keyframes underline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes photo-drift {
+  from {
+    transform: scale(1.065);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes ticker-travel {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes star-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes backdrop-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 600px) {
+  .ticker-item {
+    gap: 30px;
+    padding: 16px 20px;
+    font-size: 10px;
+  }
+  .ticker-star {
+    font-size: 20px;
+  }
+  .motion-toggle {
+    right: 12px;
+    bottom: 12px;
+    font-size: 9px;
+    padding: 8px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .headline-line,
+  .hero-intro > .eyebrow,
+  .hero-description,
+  .hero-actions,
+  .hero-footnote,
+  .hero-gallery,
+  .home-search,
+  .cover-caption > span,
+  .cover-caption > p {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .hero-word svg path {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+  .ticker-track,
+  .ticker-star,
+  .cover-frame > img {
+    animation: none !important;
+  }
+  .motion-toggle,
+  .reading-progress {
+    display: none;
+  }
+}

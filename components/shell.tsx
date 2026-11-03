@@ -15,6 +15,7 @@ import {
   Aperture,
 } from "lucide-react";
 import { Brand } from "./shared";
+import { MotionEffects } from "./motion-effects";
 import { Button } from "./ui/button";
 import { authClient } from "@/lib/auth-client";
 const links = [
@@ -277,10 +278,6 @@ function Footer() {
             <small>Newsletter service coming soon.</small>
           </div>
         </div>
-        <div className="footer-wordmark" aria-hidden="true">
-          studio<span>space</span>
-          <Aperture />
-        </div>
         <div className="footer-bottom">
           <span>
             © {new Date().getFullYear()} StudioSpace. All rights reserved.
@@ -297,6 +294,7 @@ function Footer() {
 export function Shell({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <MotionEffects />
       <Header />
       <main>{children}</main>
       <Footer />

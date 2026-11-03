@@ -13,7 +13,11 @@ const displayFont = localFont({
   weight: "200 800",
 });
 import { Shell } from "@/components/shell";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 import "./globals.css";
+import "./motion.css";
 export const metadata: Metadata = {
   title: {
     default: "StudioSpace — Good work. Great space.",

@@ -8,12 +8,14 @@ import {
   ArrowUpRight,
   MapPin,
   Star,
+  Heart,
   X,
   ArrowRight,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { api, errorMessage } from "@/lib/api";
 import { type Studio, money } from "@/lib/types";
+import { showWishlistError, useWishlist } from "./wishlist";
 import { Button } from "./ui/button";
 export function Brand() {
   return (
@@ -104,6 +106,27 @@ export function Heading({
   );
 }
 export function StudioCard({ studio }: { studio: Studio }) {
+  const router = useRouter();
+  const path = usePathname();
+  const { ids, loading, signedIn, toggle } = useWishlist();
+  const [saving, setSaving] = useState(false);
+  const saved = ids.includes(studio._id);
+
+  async function toggleSaved() {
+    if (!signedIn) {
+      router.push(`/login?next=${encodeURIComponent(path)}`);
+      return;
+    }
+    setSaving(true);
+    try {
+      await toggle(studio._id);
+    } catch (error) {
+      showWishlistError(error);
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <article className="studio-card">
       <Link href={`/studios/${studio._id}`} className="card-image">
@@ -120,6 +143,17 @@ export function StudioCard({ studio }: { studio: Studio }) {
           <ArrowUpRight size={20} />
         </span>
       </Link>
+      <button
+        type="button"
+        className={`save-studio${saved ? " saved" : ""}`}
+        aria-label={saved ? "Remove from saved studios" : "Save studio"}
+        aria-pressed={saved}
+        title={saved ? "Remove from saved studios" : "Save studio"}
+        disabled={loading || saving}
+        onClick={toggleSaved}
+      >
+        <Heart size={17} fill={saved ? "currentColor" : "none"} />
+      </button>
       <div className="card-content">
         <div className="card-top">
           <p>

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Brand } from "./shared";
 import { MotionEffects } from "./motion-effects";
+import { WishlistProvider } from "./wishlist";
 import { Button } from "./ui/button";
 import { authClient } from "@/lib/auth-client";
 const links = [
@@ -114,6 +115,7 @@ function Header() {
                       ["Add new studio", "/add-studio"],
                       ["My studio listings", "/my-listings"],
                       ["My bookings", "/my-bookings"],
+                      ["Saved studios", "/wishlist"],
                     ].map(([label, href]) => (
                       <Link
                         href={href}
@@ -158,6 +160,7 @@ function Header() {
                   ["Add new studio", "/add-studio"],
                   ["My listings", "/my-listings"],
                   ["My bookings", "/my-bookings"],
+                  ["Saved studios", "/wishlist"],
                 ]
               : [
                   ["Log in", "/login"],
@@ -294,11 +297,13 @@ function Footer() {
 export function Shell({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <MotionEffects />
-      <Header />
-      <main>{children}</main>
-      <Footer />
-      <Toaster position="top-right" richColors closeButton />
+      <WishlistProvider>
+        <MotionEffects />
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <Toaster position="top-right" richColors closeButton />
+      </WishlistProvider>
     </ThemeProvider>
   );
 }

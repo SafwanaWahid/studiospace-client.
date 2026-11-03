@@ -11,11 +11,13 @@ import {
   Building2,
   Check,
   X,
+  FileDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api, errorMessage } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
 import { type Studio, type Booking, money } from "@/lib/types";
+import { downloadInvoice } from "@/lib/invoice";
 import {
   Private,
   useResource,
@@ -24,7 +26,9 @@ import {
   ErrorState,
   Empty,
   Modal,
+  StudioCard,
 } from "./shared";
+import { useWishlist } from "./wishlist";
 import { Button } from "./ui/button";
 function Listings() {
   const { data, loading, error, reload } =
@@ -252,6 +256,24 @@ function BookingList({ host = false }: { host?: boolean }) {
                     </Button>
                   </>
                 )}
+                {!host &&
+                  (booking.status === "Confirmed" ||
+                    booking.status === "Completed") && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        try {
+                          downloadInvoice(booking);
+                        } catch (err) {
+                          toast.error(errorMessage(err));
+                        }
+                      }}
+                    >
+                      <FileDown size={15} />
+                      Download invoice PDF
+                    </Button>
+                  )}
                 {host &&
                   booking.status === "Confirmed" &&
                   booking.canComplete && (
@@ -301,6 +323,46 @@ function BookingList({ host = false }: { host?: boolean }) {
     </>
   );
 }
+
+function SavedStudios() {
+  const { data, loading, error, reload } =
+    useResource<Studio[]>("/wishlist");
+  const { ids, loading: wishlistLoading } = useWishlist();
+  const savedStudios = data?.filter((studio) => ids.includes(studio._id)) || [];
+
+  return (
+    <section className="container section">
+      <Heading
+        eyebrow="YOUR SHORTLIST"
+        title="Saved studios"
+        description="Keep inspiring spaces close while you plan your next session."
+      >
+        <Button variant="outline" asChild>
+          <Link href="/studios">Explore studios</Link>
+        </Button>
+      </Heading>
+      {loading || wishlistLoading ? (
+        <Skeleton cards={3} />
+      ) : error ? (
+        <ErrorState message={error} retry={reload} />
+      ) : !savedStudios.length ? (
+        <Empty
+          title="Your shortlist is waiting"
+          description="Tap the heart on a studio card to save a space for later."
+          href="/studios"
+          action="Find a studio"
+        />
+      ) : (
+        <div className="studio-grid">
+          {savedStudios.map((studio) => (
+            <StudioCard key={studio._id} studio={studio} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function Dashboard() {
   const { data } = authClient.useSession();
   const listings = useResource<Studio[]>("/my-listings");
@@ -350,7 +412,7 @@ function Dashboard() {
 export default function AccountPage({
   page,
 }: {
-  page: "listings" | "bookings" | "dashboard";
+  page: "listings" | "bookings" | "dashboard" | "wishlist";
 }) {
   return (
     <Private>
@@ -358,6 +420,8 @@ export default function AccountPage({
         <Listings />
       ) : page === "dashboard" ? (
         <Dashboard />
+      ) : page === "wishlist" ? (
+        <SavedStudios />
       ) : (
         <section className="container section">
           <Heading eyebrow="SAVE TIME FOR WHAT YOU LOVE" title="My bookings" />

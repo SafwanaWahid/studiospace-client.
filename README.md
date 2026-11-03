@@ -78,5 +78,4 @@ Seed studios are illustrative and have no invented review scores. The app displa
 
 ## Verified revision
 
-Production build and lint pass. The browser review has 18 passing checks with explicit API fixtures. Separate API integration and full-stack browser-to-database checks passed against a temporary MongoDB replica set. Google OAuth, real ImgBB uploads, and the final hosting origins still require account configuration and deployment checks.
-
+Production build and lint pass. The browser review has 18 passing checks with explicit API fixtures. Separate API integration and full-stack browser-to-database checks passed against a temporary MongoDB replica set. Google OAuth and the deployed client/server origins have been tested. Real ImgBB file uploads still need configuration and live verification.

@@ -26,6 +26,7 @@ import {
   MapPin,
   Plus,
   Check,
+  Info,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { StudioCard, Skeleton, ErrorState, Empty, useResource } from "./shared";
@@ -417,7 +418,7 @@ export default function Home() {
             </div>
           </div>
           <div className="creator-copy">
-            <p className="eyebrow">BEFORE YOU HIT RECORD</p>
+            <p className="eyebrow">HOST SAFETY & CREATOR SUPPORT</p>
             <h2>
               Know the space.
               <br />
@@ -426,31 +427,30 @@ export default function Home() {
               <em>Make it yours.</em>
             </h2>
             <p>
-              Good sessions start with clear expectations. Look through the
-              details before you book, so you can focus on the work when you
-              arrive.
+              Good sessions start with clear expectations. Check what the
+              platform and each host provide before you request a booking.
             </p>
             <div className="creator-checks">
               {[
                 [
-                  "Your host, in plain sight",
-                  "See the host’s name and details on every listing.",
+                  "Signed-in accounts",
+                  "Sign-in is required for listing and booking actions. StudioSpace does not independently verify user identities.",
                 ],
                 [
-                  "Equipment, without the guesswork",
-                  "Check amenities and agree handling with your host.",
+                  "Equipment and access",
+                  "Amenities are supplied by each host. Confirm equipment, safe handling, and access details before your session.",
                 ],
                 [
-                  "Deposits up front",
-                  "Review the hourly rate and security deposit before requesting.",
+                  "Costs shown up front",
+                  "Review the hourly rate and refundable security deposit before sending a booking request.",
                 ],
                 [
-                  "One place for your session",
-                  "Keep reservation times, host details, and status together.",
+                  "Support and protection limits",
+                  "Hosts manage booking requests. StudioSpace does not provide liability insurance or staffed 24/7 support.",
                 ],
-              ].map(([title, text]) => (
+              ].map(([title, text], index) => (
                 <div key={title}>
-                  <Check size={17} />
+                  {index === 3 ? <Info size={17} /> : <Check size={17} />}
                   <div>
                     <h3>{title}</h3>
                     <p>{text}</p>
